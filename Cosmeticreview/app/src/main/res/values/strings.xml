@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Cosmetic review</string>
+    <string name="title_hint">product title</string>
+    <string name="description_hint">description</string>
+    <string name="save_menu">save</string>
+    <string name="delete_deal">delete</string>
+    <string name="hint_comment" />
+    <string name="add_comment">add comment</string>
+</resources>
