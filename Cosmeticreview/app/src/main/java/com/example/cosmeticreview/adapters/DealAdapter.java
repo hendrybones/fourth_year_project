@@ -1,4 +1,4 @@
-package com.example.cosmeticreview;
+package com.example.cosmeticreview.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,7 +6,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -14,6 +13,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cosmeticreview.views.CommentActivity;
+import com.example.cosmeticreview.utils.FirebaseUtil;
+import com.example.cosmeticreview.R;
+import com.example.cosmeticreview.model.CosmeticReviewData;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,14 +26,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 
 public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder> {
-    ArrayList<TravelDeal> deals;
+    ArrayList<CosmeticReviewData> deals;
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabaseReference;
     private ChildEventListener mChildListener;
 
 
     public DealAdapter() {
-//      FirebaseUtil.openFbReference("travelDeal");
+        FirebaseUtil.openFbReference("travelDeal");
         deals = FirebaseUtil.mDeals;
         mFirebaseDatabase = FirebaseUtil.mFirebaseDatabase;
         mDatabaseReference = FirebaseUtil.mDatabaseReference;
@@ -38,18 +41,18 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                TravelDeal td=dataSnapshot.getValue(TravelDeal.class);
-                Log.d("Deals: ", td.getTitle());
+
+                CosmeticReviewData td = dataSnapshot.getValue(CosmeticReviewData.class);
+//                Log.d("Deals: ", td.getTitle());
                 td.setId(dataSnapshot.getKey());
                 deals.add(td);
-                notifyItemInserted(deals.size()-1);
-
-
+                notifyItemInserted(deals.size() - 1);
+                Log.d("DealAdapter", "onChildAdded: " + td.getId());
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
+                Log.d("DealAdapter", "onChildChanged: ");
             }
 
             @Override
@@ -69,31 +72,32 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
         };
         mDatabaseReference.addChildEventListener(mChildListener);
     }
+
     @NonNull
     @Override
     public DealViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        Context context=parent.getContext();
-        View itemView= LayoutInflater.from(context).inflate(R.layout.rv_row, parent, false);
+        Context context = parent.getContext();
+        View itemView = LayoutInflater.from(context).inflate(R.layout.rv_row, parent, false);
         return new DealViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull DealViewHolder holder, int position) {
-        TravelDeal deal=deals.get(position);
+        CosmeticReviewData deal = deals.get(position);
         holder.bind(deal);
 
     }
 
     @Override
     public int getItemCount() {
-       return deals.size();
+        return deals.size();
 
 
     }
 
-    public class DealViewHolder  extends RecyclerView.ViewHolder
-    implements View.OnClickListener{
+    public class DealViewHolder extends RecyclerView.ViewHolder
+            implements View.OnClickListener {
         TextView tvTitle;
         TextView tvDescription;
         RatingBar ratingBar;
@@ -101,13 +105,14 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
 
         public DealViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvTitle=(TextView)itemView.findViewById(R.id.tvTitle);
-            tvDescription=(TextView)itemView.findViewById(R.id.tvDescription);
-            ratingBar=(RatingBar)itemView.findViewById(R.id.ratingBar);
+            tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
+            tvDescription = (TextView) itemView.findViewById(R.id.tvDescription);
+            ratingBar = (RatingBar) itemView.findViewById(R.id.ratingBar);
             itemView.setOnClickListener(this);
 
         }
-        public  void bind(TravelDeal deal){
+
+        public void bind(CosmeticReviewData deal) {
 
             tvTitle.setText(deal.getTitle());
             tvDescription.setText(deal.getDescription());
@@ -117,11 +122,11 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
 
         @Override
         public void onClick(View v) {
-            int position=getAdapterPosition();
+            int position = getAdapterPosition();
             Log.d("Click", String.valueOf(position));
-            TravelDeal selectedDeal=deals.get(position);
-            Intent intent=new Intent(v.getContext(),CommentActivity.class);
-            intent.putExtra("Deal", selectedDeal);
+            CosmeticReviewData selectedReview = deals.get(position);
+            Intent intent = new Intent(v.getContext(), CommentActivity.class);
+            intent.putExtra("CosmeticReview", selectedReview);
             v.getContext().startActivity(intent);
 
         }

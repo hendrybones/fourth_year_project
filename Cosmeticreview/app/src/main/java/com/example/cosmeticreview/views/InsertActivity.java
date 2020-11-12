@@ -1,4 +1,4 @@
-package com.example.cosmeticreview;
+package com.example.cosmeticreview.views;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +11,9 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.cosmeticreview.utils.FirebaseUtil;
+import com.example.cosmeticreview.R;
+import com.example.cosmeticreview.model.CosmeticReviewData;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -19,16 +22,13 @@ public class InsertActivity extends AppCompatActivity {
     private DatabaseReference mDatabaseReference;
     EditText txtTitle;
     EditText txtDescription;
-    TravelDeal deal;
-
-
-
+    CosmeticReviewData deal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insert);
-        mFirebaseDatabase=FirebaseUtil.mFirebaseDatabase;
+        mFirebaseDatabase= FirebaseUtil.mFirebaseDatabase;
 //     FirebaseUtil.openFbReference("travelDeal");
         mDatabaseReference=FirebaseUtil.mDatabaseReference;
         txtTitle=(EditText)findViewById(R.id.txtTitle);
@@ -88,7 +88,7 @@ public class InsertActivity extends AppCompatActivity {
 
     }
     private  void backToList(){
-        Intent intent=new Intent(this,ListActivity.class);
+        Intent intent=new Intent(this, ListActivity.class);
         startActivity(intent);
 
     }

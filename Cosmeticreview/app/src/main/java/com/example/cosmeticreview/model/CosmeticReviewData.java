@@ -1,16 +1,17 @@
-package com.example.cosmeticreview;
+package com.example.cosmeticreview.model;
 
 import java.io.Serializable;
 
-public class TravelDeal implements Serializable {
+public class CosmeticReviewData implements Serializable {
     private String id;
     private  String title;
     private String description;
+    private String comments;
     private String imageUrl;
 
-    public  TravelDeal(){}
+    public CosmeticReviewData(){}
 
-    public TravelDeal( String title, String description, String imageUrl) {
+    public CosmeticReviewData(String title, String description, String imageUrl) {
         this.setId(id);
         this.setTitle(title);
         this.setDescription(description);

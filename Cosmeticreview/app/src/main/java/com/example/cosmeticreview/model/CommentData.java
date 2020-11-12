@@ -1,4 +1,4 @@
-package com.example.cosmeticreview;
+package com.example.cosmeticreview.model;
 
 public class CommentData {
 

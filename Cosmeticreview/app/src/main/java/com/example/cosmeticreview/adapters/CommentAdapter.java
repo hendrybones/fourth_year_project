@@ -1,4 +1,4 @@
-package com.example.cosmeticreview;
+package com.example.cosmeticreview.adapters;
 
 import android.view.View;
 import android.view.ViewGroup;
@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.cosmeticreview.model.CommentData;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
