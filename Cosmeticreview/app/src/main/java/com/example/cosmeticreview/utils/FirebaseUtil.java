@@ -6,10 +6,14 @@ import com.example.cosmeticreview.model.CosmeticReviewData;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
 public class FirebaseUtil {
+    public static FirebaseStorage mStorage;
+    public static StorageReference mStorageREf;
     public static FirebaseDatabase mFirebaseDatabase;
     public static DatabaseReference mDatabaseReference;
     public static FirebaseAuth mFirebaseAuth;
@@ -41,11 +45,18 @@ public class FirebaseUtil {
 //
 //                }
 //            };
+            connectStorage();
 
 
         }
         mDeals = new ArrayList<CosmeticReviewData>();
         mDatabaseReference = mFirebaseDatabase.getReference().child(ref);
+        //implement firebase storage instance and references.
+    }
+    public static  void connectStorage(){
+        mStorage =FirebaseStorage.getInstance();
+        mStorageREf=mStorage.getReference().child("product_pictures");
+
     }
 
 

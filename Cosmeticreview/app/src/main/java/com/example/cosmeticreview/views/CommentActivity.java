@@ -165,6 +165,9 @@ public class CommentActivity extends AppCompatActivity {
 
     }
     private void clean(){
+        tvComment.setText("");
+
+
 
     }
     private void deletedDeal(){
