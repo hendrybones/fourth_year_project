@@ -36,7 +36,7 @@ public class ListActivity extends AppCompatActivity {
 //        mDatabaseReference = mFirebaseDatabase.getReference().child("travelDeal");
 
         RecyclerView rvDeals = (RecyclerView) findViewById(R.id.rvDeals);
-       DealAdapter adapter = new DealAdapter();
+       DealAdapter adapter = new DealAdapter(this);
         rvDeals.setAdapter(adapter);
         LinearLayoutManager dealsLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvDeals.setLayoutManager(dealsLayoutManager);

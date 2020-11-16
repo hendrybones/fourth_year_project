@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.cosmeticreview.views.CommentActivity;
 import com.example.cosmeticreview.utils.FirebaseUtil;
 import com.example.cosmeticreview.R;
@@ -34,9 +35,11 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
     private ChildEventListener mChildListener;
     // for image
     private ImageView imageDeal;
+    private Context context;
 
 
-    public DealAdapter() {
+    public DealAdapter(Context context) {
+        this.context = context;
         FirebaseUtil.openFbReference("travelDeal");
         deals = FirebaseUtil.mDeals;
         mFirebaseDatabase = FirebaseUtil.mFirebaseDatabase;
@@ -145,6 +148,15 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
                         .centerCrop()
                         .into(imageDeal);
             }
+        }
+
+        private void showImageWithGlide(String url){
+            Glide.with(context)
+                    .load(url)
+                    .placeholder(R.drawable.loading_animation)
+                    .error(R.drawable.ic_broken_image)
+                    .into(imageDeal);
+
         }
     }
 }

@@ -16,6 +16,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.cosmeticreview.model.Comments;
 import com.example.cosmeticreview.model.CosmeticReviewData;
 import com.example.cosmeticreview.model.RatingsComments;
@@ -62,6 +64,8 @@ public class CommentActivity extends AppCompatActivity {
         tvComment=(EditText)findViewById(R.id.tvComment);
 
         tvProduct.setText(cosmeticReviewData.getTitle());
+        Log.d("IMAGE_URL", "onCreate: "+cosmeticReviewData.getImageUrl());
+        showImageWithGlide(cosmeticReviewData.getImageUrl());
 
         tvRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
@@ -175,6 +179,16 @@ public class CommentActivity extends AppCompatActivity {
     }
     private void backToList(){
         
+    }
+
+    private void showImageWithGlide(String url){
+        Glide.with(this)
+                .load(url)
+                .placeholder(R.drawable.loading_animation)
+                .error(R.drawable.ic_broken_image)
+                .apply(new RequestOptions().override(600, 200))
+                .into(imageView);
+
     }
 
 }
