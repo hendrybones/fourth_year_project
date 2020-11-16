@@ -185,10 +185,7 @@ public class CommentActivity extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
-
-
         }
-
     }
 
 
@@ -200,22 +197,16 @@ public class CommentActivity extends AppCompatActivity {
     }
 
     private void saveDeal(){
-
     }
+
     private void clean(){
         tvComment.setText("");
-
-
-
     }
     private void deletedDeal(){
 
     }
     private void backToList(){
-        
     }
-
-
 
     private void showImageWithGlide(String url){
         Glide.with(this)
@@ -224,8 +215,5 @@ public class CommentActivity extends AppCompatActivity {
                 .error(R.drawable.ic_broken_image)
                 .apply(new RequestOptions().override(600, 200))
                 .into(imageView);
-
     }
-
-
 }
