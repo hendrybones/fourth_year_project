@@ -20,12 +20,12 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-<<<<<<< HEAD
+
 import com.example.cosmeticreview.adapters.CommentAdapter;
-=======
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
->>>>>>> 3fd5f0edb8801cd61e6ea768c02f212eec4cd6e0
+
 import com.example.cosmeticreview.model.Comments;
 import com.example.cosmeticreview.model.CosmeticReviewData;
 import com.example.cosmeticreview.model.RatingsComments;
@@ -215,8 +215,8 @@ public class CommentActivity extends AppCompatActivity {
         
     }
 
-<<<<<<< HEAD
-=======
+
+
     private void showImageWithGlide(String url){
         Glide.with(this)
                 .load(url)
@@ -226,6 +226,6 @@ public class CommentActivity extends AppCompatActivity {
                 .into(imageView);
 
     }
->>>>>>> 3fd5f0edb8801cd61e6ea768c02f212eec4cd6e0
+
 
 }
