@@ -36,81 +36,10 @@ public class ListActivity extends AppCompatActivity {
 //        mDatabaseReference = mFirebaseDatabase.getReference().child("travelDeal");
 
         RecyclerView rvDeals = (RecyclerView) findViewById(R.id.rvDeals);
-       DealAdapter adapter = new DealAdapter();
+        DealAdapter adapter = new DealAdapter();
         rvDeals.setAdapter(adapter);
         LinearLayoutManager dealsLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvDeals.setLayoutManager(dealsLayoutManager);
-//        mChildListener = new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//
-//                TravelDeal td=dataSnapshot.getValue(TravelDeal.class);
-////                Log.d("Deals: ", td.getTitle());
-//                td.setId(dataSnapshot.getKey());
-//                deals.add(td);
-//                Log.d("DealAdapter", "onChildAdded: ");
-//            }
-//
-//            @Override
-//            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//                Log.d("DealAdapter", "onChildChanged: ");
-//            }
-//
-//            @Override
-//            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        };
-
-
-//        mDatabaseReference.addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//
-//                TravelDeal td=dataSnapshot.getValue(TravelDeal.class);
-////                Log.d("Deals: ", td.getTitle());
-//                td.setId(dataSnapshot.getKey());
-//                deals.add(td);
-//                Log.d("DealAdapter", "onChildAdded: "+td);
-//            }
-//
-//            @Override
-//            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//                TravelDeal td=snapshot.getValue(TravelDeal.class);
-////                Log.d("Deals: ", td.getTitle());
-//                td.setId(snapshot.getKey());
-//                deals.add(td);
-//
-//                Log.d("DealAdapter", "onChildChanged: ");
-//            }
-//
-//            @Override
-//            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
 
 
     }
@@ -149,20 +78,5 @@ public class ListActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//    }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        FirebaseUtil.openFbReference("TravelDeal");
-//        RecyclerView rvDeals = (RecyclerView) findViewById(R.id.rvDeals);
-//        final DealAdapter adapter = new DealAdapter();
-//        rvDeals.setAdapter(adapter);
-//        LinearLayoutManager dealsLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-//        rvDeals.setLayoutManager(dealsLayoutManager);
-//
-//    }
 }

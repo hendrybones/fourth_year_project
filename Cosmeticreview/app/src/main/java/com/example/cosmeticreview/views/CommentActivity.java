@@ -3,8 +3,12 @@ package com.example.cosmeticreview.views;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -16,6 +20,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.cosmeticreview.adapters.CommentAdapter;
 import com.example.cosmeticreview.model.Comments;
 import com.example.cosmeticreview.model.CosmeticReviewData;
 import com.example.cosmeticreview.model.RatingsComments;
@@ -27,9 +32,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
+
+import static android.app.PendingIntent.getActivity;
 
 public class CommentActivity extends AppCompatActivity {
+
+
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabaseReference;
     private CosmeticReviewData cosmeticReviewData = null;
@@ -40,12 +52,15 @@ public class CommentActivity extends AppCompatActivity {
     ImageView imageView;
     RatingBar tvRating;
     EditText tvComment;
-
+    private RecyclerView comment_recy;
+    private CommentAdapter commentAdapter;
+    private LinearLayoutManager linearLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
+        comment_recy = (RecyclerView) findViewById(R.id.comment_r);
 
         Intent intent = getIntent();
         cosmeticReviewData = (CosmeticReviewData) intent.getSerializableExtra("CosmeticReview");
@@ -61,6 +76,8 @@ public class CommentActivity extends AppCompatActivity {
         tvRating=(RatingBar)findViewById(R.id.tvRating);
         tvComment=(EditText)findViewById(R.id.tvComment);
 
+        String id = cosmeticReviewData.getId();
+
         tvProduct.setText(cosmeticReviewData.getTitle());
 
         tvRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
@@ -74,6 +91,13 @@ public class CommentActivity extends AppCompatActivity {
 
 
         Log.d("COSMETIC DATA", "onCreate: "+cosmeticReviewData.getTitle());
+        linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+
+        commentAdapter = new CommentAdapter(id);
+        comment_recy.setAdapter(commentAdapter);
+        comment_recy.setLayoutManager(linearLayoutManager);
+
+
     }
 
     private void observeRatingsAndCommentsData(){
@@ -121,7 +145,14 @@ public class CommentActivity extends AppCompatActivity {
 
         Log.d("RATINGS_COMME", "addComment: "+userRating+"SIZE="+tvComment.getText().toString().length());
         if(cosmeticReviewData != null) {
-            RatingsComments ratingsComments = new RatingsComments(tvComment.getText().toString(), userRating);
+
+            SharedPreferences sharedPref = CommentActivity.this.getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
+            String username = sharedPref.getString("username", "username");
+
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss ");
+            String currentDate = sdf.format(new Date());
+
+            RatingsComments ratingsComments = new RatingsComments(username,tvComment.getText().toString(), userRating,currentDate);
             mDatabaseReference.push().setValue(ratingsComments);
         }
 
@@ -176,5 +207,6 @@ public class CommentActivity extends AppCompatActivity {
     private void backToList(){
         
     }
+
 
 }
