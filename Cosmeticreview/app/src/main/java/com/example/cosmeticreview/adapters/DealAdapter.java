@@ -35,6 +35,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
     private ChildEventListener mChildListener;
     // for image
     private ImageView imageDeal;
+    private RatingBar ratingBar;
     private Context context;
 
 
@@ -99,8 +100,6 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
     @Override
     public int getItemCount() {
         return deals.size();
-
-
     }
 
     public class DealViewHolder extends RecyclerView.ViewHolder
@@ -115,18 +114,14 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
             tvTitle = (TextView) itemView.findViewById(R.id.tvTitle);
             tvDescription = (TextView) itemView.findViewById(R.id.tvDescription);
             ratingBar = (RatingBar) itemView.findViewById(R.id.ratingBar);
-            imageDeal=(ImageView)itemView.findViewById(R.id.imageDeal);
+            imageDeal = (ImageView) itemView.findViewById(R.id.imageDeal);
             itemView.setOnClickListener(this);
-
         }
 
         public void bind(CosmeticReviewData deal) {
-
             tvTitle.setText(deal.getTitle());
             tvDescription.setText(deal.getDescription());
             showImage(deal.getImageUrl());
-
-
         }
 
         @Override
@@ -139,18 +134,19 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
             v.getContext().startActivity(intent);
 
         }
+
         // view image in the ui reclerview
-        private void showImage(String url){
-            if (url !=null && url.isEmpty()==false){
+        private void showImage(String url) {
+            if (url != null && url.isEmpty() == false) {
                 Picasso.get()
                         .load(url)
-                        .resize(80,80)
+                        .resize(80, 80)
                         .centerCrop()
                         .into(imageDeal);
             }
         }
 
-        private void showImageWithGlide(String url){
+        private void showImageWithGlide(String url) {
             Glide.with(context)
                     .load(url)
                     .placeholder(R.drawable.loading_animation)
@@ -160,4 +156,3 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
         }
     }
 }
-
