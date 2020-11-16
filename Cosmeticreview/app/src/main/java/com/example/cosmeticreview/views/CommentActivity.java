@@ -20,7 +20,12 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+<<<<<<< HEAD
 import com.example.cosmeticreview.adapters.CommentAdapter;
+=======
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+>>>>>>> 3fd5f0edb8801cd61e6ea768c02f212eec4cd6e0
 import com.example.cosmeticreview.model.Comments;
 import com.example.cosmeticreview.model.CosmeticReviewData;
 import com.example.cosmeticreview.model.RatingsComments;
@@ -79,6 +84,8 @@ public class CommentActivity extends AppCompatActivity {
         String id = cosmeticReviewData.getId();
 
         tvProduct.setText(cosmeticReviewData.getTitle());
+        Log.d("IMAGE_URL", "onCreate: "+cosmeticReviewData.getImageUrl());
+        showImageWithGlide(cosmeticReviewData.getImageUrl());
 
         tvRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
@@ -208,5 +215,17 @@ public class CommentActivity extends AppCompatActivity {
         
     }
 
+<<<<<<< HEAD
+=======
+    private void showImageWithGlide(String url){
+        Glide.with(this)
+                .load(url)
+                .placeholder(R.drawable.loading_animation)
+                .error(R.drawable.ic_broken_image)
+                .apply(new RequestOptions().override(600, 200))
+                .into(imageView);
+
+    }
+>>>>>>> 3fd5f0edb8801cd61e6ea768c02f212eec4cd6e0
 
 }
