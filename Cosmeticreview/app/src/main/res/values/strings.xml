@@ -6,4 +6,8 @@
     <string name="delete_deal">delete</string>
     <string name="hint_comment" />
     <string name="add_comment">add comment</string>
+    <string name="email">enter_email</string>
+    <string name="password">password</string>
+    <string name="log_in">log_in</string>
+    <string name="create_new_account">create_account</string>
 </resources>
