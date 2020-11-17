@@ -11,9 +11,6 @@ import java.util.Date;
 
 public class RatingsComments implements Serializable {
 
-
-
-
     private String id;
     private String username;
     private String comment;
