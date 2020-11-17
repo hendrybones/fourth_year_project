@@ -31,6 +31,7 @@ import com.example.cosmeticreview.model.CosmeticReviewData;
 import com.example.cosmeticreview.model.RatingsComments;
 import com.example.cosmeticreview.utils.FirebaseUtil;
 import com.example.cosmeticreview.R;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -49,12 +50,15 @@ public class CommentActivity extends AppCompatActivity {
 
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mDatabaseReference;
+    private DatabaseReference usersRef;
+    private FirebaseAuth mAuth;
     private CosmeticReviewData cosmeticReviewData = null;
 
     private ArrayList<RatingsComments> commentsList;
     private double userRating = 0.0;
     private double averageRating = 0.0;
     private int count = 0;
+    private String currentUser="Anonymous";
     TextView tvProduct;
     ImageView imageView;
     RatingBar tvRating;
@@ -74,6 +78,36 @@ public class CommentActivity extends AppCompatActivity {
 
         FirebaseUtil.openFbReference("travelDeal");
         mFirebaseDatabase = FirebaseUtil.mFirebaseDatabase;
+        mAuth = FirebaseAuth.getInstance();
+        String currentUserId = mAuth.getUid();
+        usersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserId);
+        usersRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                currentUser = snapshot.getValue().toString();
+                Log.d("CURRENT_USER", "onChildAdded: USER = "+currentUser);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         mDatabaseReference = FirebaseUtil.mDatabaseReference.child(cosmeticReviewData.getId()).child("RatingsAndComments");
 
         commentsList = new ArrayList<>();
@@ -86,6 +120,9 @@ public class CommentActivity extends AppCompatActivity {
         String id = cosmeticReviewData.getId();
 
         tvProduct.setText(cosmeticReviewData.getTitle());
+
+        Log.d("USER", "USERNAME = "+mAuth.getCurrentUser().getDisplayName());
+
         Log.d("IMAGE_URL", "onCreate: " + cosmeticReviewData.getImageUrl());
         Log.d("AVERAGE_RATING", "onCreate: " + cosmeticReviewData.getAverageRating());
         showImageWithGlide(cosmeticReviewData.getImageUrl());
@@ -162,7 +199,7 @@ public class CommentActivity extends AppCompatActivity {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss ");
             String currentDate = sdf.format(new Date());
 
-            RatingsComments ratingsComments = new RatingsComments(username, tvComment.getText().toString(), userRating, currentDate);
+            RatingsComments ratingsComments = new RatingsComments(currentUser, tvComment.getText().toString(), userRating, currentDate);
             mDatabaseReference.push().setValue(ratingsComments);
         }
 
