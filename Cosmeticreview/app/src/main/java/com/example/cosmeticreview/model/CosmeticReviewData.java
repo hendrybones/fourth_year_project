@@ -8,6 +8,7 @@ public class CosmeticReviewData implements Serializable {
     private String description;
     private String comments;
     private String imageUrl;
+    private double averageRating;
 
     public CosmeticReviewData(){}
 
@@ -48,5 +49,13 @@ public class CosmeticReviewData implements Serializable {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public double getAverageRating() {
+        return averageRating;
+    }
+
+    public void setAverageRating(double averageRating) {
+        this.averageRating = averageRating;
     }
 }

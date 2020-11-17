@@ -121,6 +121,7 @@ public class DealAdapter extends RecyclerView.Adapter<DealAdapter.DealViewHolder
         public void bind(CosmeticReviewData deal) {
             tvTitle.setText(deal.getTitle());
             tvDescription.setText(deal.getDescription());
+            ratingBar.setRating((float) deal.getAverageRating());
             showImage(deal.getImageUrl());
         }
 

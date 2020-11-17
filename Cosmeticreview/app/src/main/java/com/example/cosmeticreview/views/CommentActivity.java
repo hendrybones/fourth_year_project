@@ -53,6 +53,8 @@ public class CommentActivity extends AppCompatActivity {
 
     private ArrayList<RatingsComments> commentsList;
     private double userRating = 0.0;
+    private double averageRating = 0.0;
+    private int count = 0;
     TextView tvProduct;
     ImageView imageView;
     RatingBar tvRating;
@@ -71,49 +73,51 @@ public class CommentActivity extends AppCompatActivity {
         cosmeticReviewData = (CosmeticReviewData) intent.getSerializableExtra("CosmeticReview");
 
         FirebaseUtil.openFbReference("travelDeal");
-        mFirebaseDatabase= FirebaseUtil.mFirebaseDatabase;
-        mDatabaseReference=FirebaseUtil.mDatabaseReference.child(cosmeticReviewData.getId()).child("RatingsAndComments");
+        mFirebaseDatabase = FirebaseUtil.mFirebaseDatabase;
+        mDatabaseReference = FirebaseUtil.mDatabaseReference.child(cosmeticReviewData.getId()).child("RatingsAndComments");
 
         commentsList = new ArrayList<>();
 
-        tvProduct=(TextView)findViewById(R.id.tvProduct);
-        imageView=(ImageView)findViewById(R.id.imageView);
-        tvRating=(RatingBar)findViewById(R.id.tvRating);
-        tvComment=(EditText)findViewById(R.id.tvComment);
+        tvProduct = (TextView) findViewById(R.id.tvProduct);
+        imageView = (ImageView) findViewById(R.id.imageView);
+        tvRating = (RatingBar) findViewById(R.id.tvRating);
+        tvComment = (EditText) findViewById(R.id.tvComment);
 
         String id = cosmeticReviewData.getId();
 
         tvProduct.setText(cosmeticReviewData.getTitle());
-        Log.d("IMAGE_URL", "onCreate: "+cosmeticReviewData.getImageUrl());
+        Log.d("IMAGE_URL", "onCreate: " + cosmeticReviewData.getImageUrl());
+        Log.d("AVERAGE_RATING", "onCreate: " + cosmeticReviewData.getAverageRating());
         showImageWithGlide(cosmeticReviewData.getImageUrl());
+
+        observeRatingsAndCommentsData();
 
         tvRating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 userRating = rating;
-                Log.d("RATING", "onRatingChanged: "+rating);
+                Log.d("RATING", "onRatingChanged: " + rating);
             }
         });
 
 
-
-        Log.d("COSMETIC DATA", "onCreate: "+cosmeticReviewData.getTitle());
+        Log.d("COSMETIC DATA", "onCreate: " + cosmeticReviewData.getTitle());
         linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
         commentAdapter = new CommentAdapter(id);
         comment_recy.setAdapter(commentAdapter);
         comment_recy.setLayoutManager(linearLayoutManager);
 
-
     }
 
-    private void observeRatingsAndCommentsData(){
+    private void observeRatingsAndCommentsData() {
         mDatabaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 RatingsComments ratingsComments = snapshot.getValue(RatingsComments.class);
-                commentsList.add(ratingsComments);
-                Log.d("COMMENTS", "onChildAdded: "+ratingsComments);
+                averageRating = averageRating + ratingsComments.getRating();
+                count++;
+                Log.d("RatingsComments", "onChildAdded: "+ratingsComments.getRating());
             }
 
             @Override
@@ -138,40 +142,43 @@ public class CommentActivity extends AppCompatActivity {
         });
     }
 
-
-    private void addComment(){
-        if(userRating == 0.0){
-            Toast.makeText(this,"Put your rating", Toast.LENGTH_LONG).show();
+    private void addComment() {
+        if (userRating == 0.0) {
+            Toast.makeText(this, "Put your rating", Toast.LENGTH_LONG).show();
             return;
         }
 
-        if(tvComment.getText().toString().length()==0){
-            Toast.makeText(this,"Write your comment first", Toast.LENGTH_LONG).show();
+        if (tvComment.getText().toString().length() == 0) {
+            Toast.makeText(this, "Write your comment first", Toast.LENGTH_LONG).show();
             return;
         }
 
-        Log.d("RATINGS_COMME", "addComment: "+userRating+"SIZE="+tvComment.getText().toString().length());
-        if(cosmeticReviewData != null) {
+        Log.d("RATINGS_COMME", "addComment: " + userRating + "SIZE=" + tvComment.getText().toString().length());
 
+        if (cosmeticReviewData != null) {
             SharedPreferences sharedPref = CommentActivity.this.getSharedPreferences("myPrefs", Context.MODE_PRIVATE);
             String username = sharedPref.getString("username", "username");
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss ");
             String currentDate = sdf.format(new Date());
 
-            RatingsComments ratingsComments = new RatingsComments(username,tvComment.getText().toString(), userRating,currentDate);
+            RatingsComments ratingsComments = new RatingsComments(username, tvComment.getText().toString(), userRating, currentDate);
             mDatabaseReference.push().setValue(ratingsComments);
         }
 
-        Toast.makeText(this,"comment saved",Toast.LENGTH_LONG).show();
+        int aver = (int) (averageRating/count);
+        mDatabaseReference = FirebaseUtil.mDatabaseReference.child(cosmeticReviewData.getId()).child("averageRating");
+        Log.d("AVERAGE_RATING", "addComment: NEW AVERAGE = "+averageRating);
+        mDatabaseReference.setValue(aver);
 
+        Toast.makeText(this, "comment saved", Toast.LENGTH_LONG).show();
     }
 
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         //we use switch to get item that was clicked
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.save_menu:
                 addComment();
                 clean();
@@ -179,7 +186,7 @@ public class CommentActivity extends AppCompatActivity {
                 return true;
             case R.id.delete_menu:
                 deletedDeal();
-                Toast.makeText(this,"deal deleted",Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "deal deleted", Toast.LENGTH_LONG).show();
                 //we call this method because we want to be back to the list after deleteing
                 backToList();
                 return true;
@@ -191,24 +198,26 @@ public class CommentActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater=getMenuInflater();
-        inflater.inflate(R.menu.save_menu,menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.save_menu, menu);
         return true;
     }
 
-    private void saveDeal(){
+    private void saveDeal() {
     }
 
-    private void clean(){
+    private void clean() {
         tvComment.setText("");
     }
-    private void deletedDeal(){
+
+    private void deletedDeal() {
 
     }
-    private void backToList(){
+
+    private void backToList() {
     }
 
-    private void showImageWithGlide(String url){
+    private void showImageWithGlide(String url) {
         Glide.with(this)
                 .load(url)
                 .placeholder(R.drawable.loading_animation)
