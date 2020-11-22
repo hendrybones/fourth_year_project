@@ -202,7 +202,7 @@ public class CommentActivity extends AppCompatActivity {
             RatingsComments ratingsComments = new RatingsComments(currentUser, tvComment.getText().toString(), userRating, currentDate);
             mDatabaseReference.push().setValue(ratingsComments);
         }
-
+//rating logic
         int aver = (int) (averageRating/count);
         mDatabaseReference = FirebaseUtil.mDatabaseReference.child(cosmeticReviewData.getId()).child("averageRating");
         Log.d("AVERAGE_RATING", "addComment: NEW AVERAGE = "+averageRating);

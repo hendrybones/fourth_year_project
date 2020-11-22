@@ -57,6 +57,7 @@
             android:id="@+id/ratingBar"
             android:layout_width="239dp"
             android:layout_height="45dp"
+            android:clickable="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/tvTitle"
