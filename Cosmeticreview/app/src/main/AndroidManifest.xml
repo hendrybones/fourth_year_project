@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".views.RegisterActivity"></activity>
+        <activity android:name=".views.RegisterActivity" android:parentActivityName=".views.LoginActivity"></activity>
         <activity android:name=".views.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,11 +18,11 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".views.CommentActivity" />
+        <activity android:name=".views.CommentActivity" android:parentActivityName=".views.ListActivity" />
         <activity android:name=".views.ListActivity">
 
         </activity>
-        <activity android:name=".views.InsertActivity" />
+        <activity android:name=".views.InsertActivity" android:parentActivityName=".views.ListActivity"/>
     </application>
 
 </manifest>

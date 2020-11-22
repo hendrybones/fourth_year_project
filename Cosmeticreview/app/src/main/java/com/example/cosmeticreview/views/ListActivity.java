@@ -20,6 +20,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
+import static com.example.cosmeticreview.utils.FirebaseUtil.mFirebaseAuth;
+
 public class ListActivity extends AppCompatActivity {
     ArrayList<CosmeticReviewData> deals = new ArrayList<>();
     private FirebaseDatabase mFirebaseDatabase;
@@ -59,23 +61,15 @@ public class ListActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             case R.id.logout_menu:
-//                AuthUI.getInstance()
-//                        .signOut(this)
-//                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                            public void onComplete(@NonNull Task<Void> task) {
-//
-//                                // ...
-//                                Log.d("logout","User Logged Out");
-//                                FirebaseUtil.attachListener();
-//                            }
-//                        });
-//                FirebaseUtil.detachListener();
+                mFirebaseAuth.signOut();
+                Intent loginscreen = new Intent(ListActivity.this, LoginActivity.class);
+                loginscreen.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(loginscreen);
+                finish();
                 return true;
 
 
         }
         return super.onOptionsItemSelected(item);
     }
-
-
 }
